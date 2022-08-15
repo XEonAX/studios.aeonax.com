@@ -1,0 +1,357 @@
+<!DOCTYPE HTML>
+<!--
+	Stellar by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>ANXRacers Spaceship Skinner</title>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet"
+          href="../assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet"
+              href="../assets/css/noscript.css" />
+    </noscript>
+</head>
+
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Header -->
+        <header id="header">
+            <h1>ANXRacers Spaceship Skinner</h1>
+            <p>Paint your Ships!</p>
+        </header>
+
+        <!-- Main -->
+        <div id="main">
+
+            <!-- Content -->
+            <section id="content"
+                     class="main">
+
+                <!-- Text -->
+                <section>
+                    <label for="spaceships">Choose a Spaceship:</label>
+
+                    <select name="spaceships"
+                            id="spaceships">
+                        <option value="---">Select a spaceship</option>
+                        <option value="Sparrow">Sparrow</option>
+                        <option value="Eagle">Eagle</option>
+                        <option value="Falcon">Falcon</option>
+                        <option value="Squid">Squid</option>
+                    </select>
+                    <hr />
+                    <div class="row">
+                        <div id="rightSide"
+                             class="col-8 col-12-medium">
+
+                        </div>
+                        <ul id="leftSide"
+                            class="alt col-4 col-12-medium">
+
+                        </ul>
+                    </div>
+                    <hr />
+                    <button id="Export"
+                            class="button icon solid fa-download">Export</button>
+                    <br />
+                    <progress id="exportProgress"
+                              value="0"
+                              max="100"></progress>
+                    <p>Once you click on export. Download the 512.png and 100.png and send it to <a
+                           href="https://t.me/ANXStudios">AEonAX Studios</a>. Also include RGB colors of Rear
+                        Engine/Reverse Engine Exhausts if any.</p>
+                    <ul id="ExportArea"
+                        class="alt">
+                    </ul>
+                </section>
+            </section>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer id="footer">
+        <!-- <section>
+            <h2>Aliquam sed mauris</h2>
+            <p>Sed lorem ipsum dolor sit amet et nullam consequat feugiat consequat magna adipiscing tempus etiam dolore
+                veroeros. eget dapibus mauris. Cras aliquet, nisl ut viverra sollicitudin, ligula erat egestas velit,
+                vitae
+                tincidunt odio.</p>
+            <ul class="actions">
+                <li><a href="#"
+                       class="button">Learn More</a></li>
+            </ul>
+        </section> -->
+        <section></section>
+        <section>
+            <!-- <h2>Etiam feugiat</h2>
+            <dl class="alt">
+                <dt>Address</dt>
+                <dd>1234 Somewhere Road &bull; Nashville, TN 00000 &bull; USA</dd>
+                <dt>Phone</dt>
+                <dd>(000) 000-0000 x 0000</dd>
+                <dt>Email</dt>
+                <dd><a href="#">information@untitled.tld</a></dd>
+            </dl> -->
+            <p>
+                To be used for spaceship skinning for ANXRacers game.<br />
+                Get it below:
+            </p>
+            <ul class="icons">
+                <li><a href="https://play.google.com/store/apps/details?id=com.aeonax.racers"
+                       class="icon brands fa-google-play alt"><span class="label">Google Play Store</span></a></li>
+                <li><a href="https://aeonax.itch.io/racers"
+                       class="icon brands fa-itch-io alt"><span class="label">Itch.io</span></a></li>
+            </ul>
+        </section>
+        <p class="copyright">&copy; AEonAX Studios. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+    </footer>
+    <!-- Scripts -->
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/jquery.scrollex.min.js"></script>
+    <script src="../assets/js/jquery.scrolly.min.js"></script>
+    <script src="../assets/js/browser.min.js"></script>
+    <script src="../assets/js/breakpoints.min.js"></script>
+    <script src="../assets/js/util.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="./pablo.min.js"></script>
+    <script src="./jscolor.min.js"></script>
+    <script>
+        var svg = Pablo(document.getElementById("rightSide")).svg({
+            width: "100%",
+            height: "100%"
+        });
+        var spaceships = document.getElementById("spaceships");
+        spaceships.addEventListener("change", function (evt) {
+            document.getElementById("leftSide").replaceChildren();
+            var Spaceship = evt.target.value;
+            if (Spaceship == "---") return;
+            svg.load('./' + Spaceship + '.svg', function onload(a, b, c) {
+                svg.find("path, rect").forEach(path => {
+                    var pPath = Pablo(path);
+                    ["fill", "stroke"].forEach(attr => {
+                        var attrValue = pPath.css(attr);
+                        if (attrValue != undefined && attrValue != "" && attrValue != "none") {
+                            var div = document.createElement("li");
+                            var lbl = document.createElement("label");
+                            lbl.innerText = (pPath.parent().attr('id') ?? "Unknown") + " - " + attr;
+                            div.append(lbl);
+                            var inp = document.createElement("input");
+                            inp.type = "text"
+                            div.append(inp);
+                            var myPicker = new JSColor(inp, {
+                                alphaChannel: true,
+                                value: pPath.css(attr),
+                                previewSize: 45,
+                                onChange: function (value) {
+                                    pPath.css(attr, this.toRGBAString());
+                                }
+                            })
+                            document.getElementById("leftSide").append(div);
+                            pPath.on('touchstart click', function () {
+                                myPicker.show();
+                            })
+                        }
+                    })
+
+
+                });
+
+                document.getElementById("Export").onclick = function () {
+                    document.getElementById("ExportArea").replaceChildren();
+                    var progress = document.getElementById("exportProgress");
+                    progress.value = 10;
+
+                    svg.attr("width", 512);
+                    svg.attr("height", 512);
+                    var img512 = svg.toImage("png")[0];
+                    var exportarea = document.getElementById("ExportArea")
+                    var div = document.createElement("li");
+                    //div.append(img512)
+
+                    setTimeout(() => {
+                        progress.value = 25;
+                        var download = document.createElement('a');
+                        download.className = "button primary"
+                        download.href = img512.src;
+                        download.download = Spaceship + '.512.png';
+                        download.text = Spaceship + '.512.png';
+                        // download.click();
+                        div.append(download)
+
+                        exportarea.append(div)
+                        svg.attr("width", 100);
+                        svg.attr("height", 100);
+                        setTimeout(() => {
+
+                            progress.value = 50;
+                            var img100 = svg.toImage("png")[0];
+
+                            setTimeout(() => {
+
+                                progress.value = 200;
+                                download = document.createElement('a');
+                                download.className = "button primary"
+                                download.href = img100.src;
+                                download.download = Spaceship + '.100.png';
+                                download.text = Spaceship + '.100.png';
+                                // download.click();
+                                div.append(download)
+
+                                exportarea.append(div)
+
+                                svg.attr("width", "100%");
+                                svg.attr("height", "100%");
+
+                            }, 250);
+                        }, 100);
+                    }, 250);
+
+
+
+
+
+                    // .forEach(img => {
+                    //     document.getElementById("ExportArea").append(img);
+                    //     var download = document.createElement('a');
+                    //     download.className = "button primary"
+                    //     download.href = img.src;
+                    //     download.download = Spaceship + '.512.png';
+                    //     download.text = Spaceship + '.512.png';
+                    //     // download.click();
+                    //     document.getElementById("ExportArea").append(download)
+
+                    //     svg.attr("width", 100);
+                    //     svg.attr("heigth", 100);
+                    //     svg.toImage("png").forEach(img => {
+                    //         document.getElementById("ExportArea").append(img);
+                    //         var download = document.createElement('a');
+                    //         download.className = "button primary"
+                    //         download.href = img.src;
+                    //         download.download = Spaceship + '.png';
+                    //         download.text = Spaceship + '.png';
+                    //         // download.click();
+                    //         document.getElementById("ExportArea").append(download)
+                    //         svg.attr("width", 512);
+                    //         svg.attr("heigth", 512);
+
+                    //     })
+                    // })
+
+                };
+            }, true);
+        });
+        // var Spaceship = "Squid"
+        spaceships.value = "---"
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+<!-- 
+
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ANXRacers Spaceship Skinner</title>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no" />
+    <style>
+        html {
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="Container">
+
+    </div>
+    <div id="Controls">
+
+    </div>
+    <button id="Export">Export</button>
+    <script src="./pablo.min.js"></script>
+    <script src="./jscolor.min.js"></script>
+    <script>
+        var svg = Pablo(document.getElementById("Container")).svg({
+            width: 512,
+            height: 512
+        });
+        var Spaceship = "Squid"
+        svg.load('./' + Spaceship + '.svg', function onload(a, b, c) {
+            svg.find("path, rect").forEach(path => {
+                var pPath = Pablo(path);
+                ["fill", "stroke"].forEach(attr => {
+                    var attrValue = pPath.css(attr);
+                    if (attrValue != undefined && attrValue != "" && attrValue != "none") {
+                        var div = document.createElement("div");
+                        var inp = document.createElement("input");
+                        div.append(inp);
+                        var myPicker = new JSColor(inp, {
+                            alphaChannel: true,
+                            value: pPath.css(attr),
+                            onChange: function (value) {
+                                pPath.css(attr, this.toRGBAString());
+                            }
+                        })
+                        document.getElementById("Controls").append(div);
+                        pPath.on('touchstart click', function(){
+                            myPicker.show();
+                        })
+                    }
+                })
+
+
+            });
+
+            document.getElementById("Export").onclick = function () {
+                svg.toImage("png").forEach(img => {
+                    document.body.append(img);
+                    var download = document.createElement('a');
+                    download.href = img.src;
+                    download.download = Spaceship + '.512.png';
+                    download.text = Spaceship + '.512.png';
+                    // download.click();
+                    document.body.append(download)
+                    
+                    svg.attr("width", 100);
+                    svg.attr("heigth", 100);
+                    svg.toImage("png").forEach(img => {
+                        document.body.append(img);
+                        var download = document.createElement('a');
+                        download.href = img.src;
+                        download.download = Spaceship + '.png';
+                        download.text = Spaceship + '.png';
+                        // download.click();
+                        document.body.append(download)
+                        svg.attr("width", 512);
+                        svg.attr("heigth", 512);
+
+                    })
+                })
+
+            };
+        }, true);
+    </script>
+</body>
+
+</html> -->

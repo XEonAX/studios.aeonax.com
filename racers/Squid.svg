@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(1,0,0,1,-404.644,-350)">
+        <g id="_00000003-f0c1-caca-deaf-d1ba51cab0de" serif:id="00000003-f0c1-caca-deaf-d1ba51cab0de" transform="matrix(1,0,0,1,404.644,350)">
+            <rect x="0" y="0" width="100" height="100" style="fill:none;"/>
+            <g>
+                <g id="UnderWing" transform="matrix(1.43834,0,0,0.557214,-597.254,-17.8076)">
+                    <path d="M473.07,172.254L468.554,176.203L450,154.891L431.446,176.203L426.93,172.254L420.056,100.917L444.508,164.044L455.492,164.044L479.944,100.917L473.07,172.254Z" style="fill:rgb(238,238,238);stroke:rgb(194,194,194);stroke-width:1.83px;"/>
+                </g>
+                <g id="ReverseEngines" transform="matrix(1.6608,-1.12663e-16,6.6663e-17,-1.52705,-697.691,281.408)">
+                    <path d="M474.744,168.5L471.415,169.155L460.502,137.542L439.896,137.542L428.948,169.155L425.699,168.5L432.831,136.15L467.567,136.15L474.744,168.5Z" style="fill:rgb(152,152,152);stroke:rgb(162,162,162);stroke-width:1.25px;"/>
+                </g>
+                <g id="Wing" transform="matrix(1,0,0,1,-392,-82.1375)">
+                    <path d="M475.25,108.438L484.75,108.438L475.25,147.15L489.75,169.288L481.25,169.288L470.56,160.312L443,160.312L413.44,160.312L402.75,169.288L394.25,169.288L408.75,147.15L399.25,108.438L408.75,108.438L421.514,142.85L442,155.361L462.486,142.85L475.25,108.438Z" style="fill:rgb(13,125,128);stroke:rgb(7,96,98);stroke-width:2px;"/>
+                </g>
+                <g>
+                    <g id="EngineBlock" transform="matrix(0.603209,-1.6563e-32,1.48702e-32,0.671875,-40.436,-30.75)">
+                        <rect x="139.9" y="152" width="20.05" height="16" style="fill:rgb(152,152,152);stroke:rgb(162,162,162);stroke-width:3.13px;"/>
+                    </g>
+                    <g id="EngineNozzle" transform="matrix(1,-1.27111e-32,2.46519e-32,0.515625,-99.925,-0.6)">
+                        <path d="M159.95,166.061L139.9,166.061L141.91,152L157.94,152L159.95,166.061Z" style="fill:rgb(204,204,204);stroke:rgb(162,162,162);stroke-width:2.51px;"/>
+                    </g>
+                </g>
+                <g id="Body" transform="matrix(0.866025,-0.5,0.5,0.866025,-415.211,145.23)">
+                    <path d="M460.511,115.822L475.21,124.308L463.832,158.986L446.238,174.489L431.539,166.003L436.168,143.014L460.511,115.822Z" style="fill:rgb(13,125,128);stroke:rgb(7,96,98);stroke-width:2px;"/>
+                </g>
+                <g id="Livery" transform="matrix(1.03979,-3.67304e-17,2.60917e-17,-0.951676,-313.901,220.716)">
+                    <path d="M356.475,173.5L343.475,173.5L346.725,160.5L353.225,160.5L356.475,173.5Z" style="fill:rgb(238,238,238);"/>
+                </g>
+                <g id="CockpitGlass" transform="matrix(1,0,0,1.33197,-299.975,-145.578)">
+                    <path d="M360,147.425L339.95,147.425L345.963,124.875L353.988,124.875L360,147.425Z" style="fill:rgb(74,60,85);"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
