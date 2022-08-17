@@ -67,8 +67,8 @@
                     <progress id="exportProgress"
                               value="0"
                               max="100"></progress>
-                    <p>Once you click on export. Download the 512.png and 100.png and send it to <a
-                           href="https://t.me/ANXStudios">AEonAX Studios</a>. Also include RGB colors of Rear
+                    <p>Once you click on export. Download the '512.png, 100.png and .svg', and send it to <a
+                           href="https://t.me/ANXStudios">AEonAX Studios</a>. Also include Skin Name and optionally RGB colors of Rear
                         Engine/Reverse Engine Exhausts if any.</p>
                     <ul id="ExportArea"
                         class="alt">
@@ -197,7 +197,7 @@
 
                             setTimeout(() => {
 
-                                progress.value = 200;
+                                progress.value = 75;
                                 download = document.createElement('a');
                                 download.className = "button primary"
                                 download.href = img100.src;
@@ -211,6 +211,27 @@
                                 svg.attr("width", "100%");
                                 svg.attr("height", "100%");
 
+                                setTimeout(() => {
+
+                                    progress.value = 100;
+                                    download = document.createElement('a');
+                                    download.className = "button primary"
+                                    download.onclick = function () {
+                                        svg.attr("width", 100);
+                                        svg.attr("height", 100);
+                                        Pablo(svg[0]).download("svg", Spaceship + '.svg')
+                                        svg.attr("width", "100%");
+                                        svg.attr("height", "100%");
+                                    };
+
+                                    download.text = Spaceship + '.svg';
+                                    // download.click();
+                                    div.append(download)
+
+                                    exportarea.append(div)
+
+
+                                }, 250);
                             }, 250);
                         }, 100);
                     }, 250);
