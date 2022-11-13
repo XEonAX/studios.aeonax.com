@@ -29,7 +29,10 @@
     "review": [
         {
             "@type": "Review",
-            "author": "AEonAX",
+            "author": {
+                "@type": "Person",
+                "name": "AEonAX"
+            },
             "datePublished": "2022-11-13",
             "reviewBody": "The game is awesome",
             "name": "Its awesome. Spent so many hours",
