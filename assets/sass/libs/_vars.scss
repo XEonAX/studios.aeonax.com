@@ -29,20 +29,20 @@
 // Palette.
 	$palette: (
 		bg:					#ffffff,
-		fg:					rgba(255,255,255,0.65),
-		fg-bold:			#ffffff,
-		fg-light:			rgba(255,255,255,0.5),
-		border:				rgba(255,255,255,0.35),
-		border-bg:			rgba(255,255,255,0.075),
-		border2:			rgba(255,255,255,0.75),
-		border2-bg:			rgba(255,255,255,0.2),
+		fg:					rgb(220, 220, 220),
+		fg-bold:			rgb(231, 231, 231),
+		fg-light:			rgb(163, 163, 163),
+		border:				rgb(178, 178, 178),
+		border-bg:			rgb(157, 157, 157),
+		border2:			rgb(40, 40, 40),
+		border2-bg:			rgb(66, 66, 66),
 
 		invert: (
-			bg:				#5a5a5a,
-			bg-alt:			#464646,
+			bg:				rgb(39, 39, 39),
+			bg-alt:			rgb(27, 27, 27),
 			fg:				#ddd,
 			fg-bold:		#e0e0e0,
-			fg-light:		rgba(204, 204, 204, 0.25),
+			fg-light:		rgba(204, 204, 204, 0.758),
 			border:			#999999,
 			border-bg:		rgba(255, 255, 255, 0.25),
 			border2:		#202020,
@@ -55,6 +55,6 @@
 		accent3:			#a89cc8,
 		accent4:			#9bb2e1,
 		accent5:			#8cc9f0,
-		bg1:				#494949,
-		bg2:				#292929
+		bg1:				#414141,
+		bg2:				#2c2c2c
 	);
