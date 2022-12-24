@@ -43,24 +43,25 @@
 
         <!-- Main -->
         <div id="main">
-
             <!-- Content -->
-            <section id="content"
+            <section id="userwelcome"
                      class="main">
 
                 <!-- Text -->
                 <section>
-                    <label for="spaceships">Choose a Spaceship:</label>
+                    <h2 id="h2UserDisplayName">...</h2><!-- Welcome {UserDisplayName}!  -->
+                    <h3 id="h3ShipName"></h3><!-- You are painting {ShipName} -->
+                </section>
+            </section>
 
-                    <select name="spaceships"
-                            id="spaceships">
-                        <option value="---">Select a spaceship</option>
-                        <option value="Sparrow">Sparrow</option>
-                        <option value="Eagle">Eagle</option>
-                        <option value="Falcon">Falcon</option>
-                        <option value="Squid">Squid</option>
-                    </select>
-                    <hr />
+            <!-- Content -->
+            <section id="content"
+                     class="main"
+                     style="display: none;">
+
+                <!-- Text -->
+                <section>
+
                     <div class="row">
                         <div id="rightSide"
                              class="col-8 col-12-medium">
@@ -72,47 +73,58 @@
                         </ul>
                     </div>
                     <hr />
-                    <button id="Export"
-                            class="button icon solid fa-download">Export</button>
+                    <label>Skin Name</label>
+                    <input type="text"
+                           id="txtSkinName"
+                           value=""
+                           placeholder="Skin Name">
+                    <hr />
+                    <a id="btnBuildSkin"
+                       class="button icon solid fa-download">Build Skin</a>
                     <br />
                     <progress id="exportProgress"
                               value="0"
-                              max="100"></progress>
-                    <p>Once you click on export. Download the '512.png, 100.png and .svg', and send it to <a
-                           href="https://t.me/ANXStudios">AEonAX Studios</a>. Also include Skin Name and optionally RGB
-                        colors of Rear
-                        Engine/Reverse Engine Exhausts if any.</p>
+                              max="100"
+                              style="width: 100%;"></progress>
+                    <p>Once you click on 'Build Skin'. Download the '.skin' from below, and send it to <a
+                           href="https://t.me/ANXStudios">AEonAX Studios (Discord)</a> or <a
+                           href="https://t.me/ANXStudios">AEonAX Studios (Telegram)</a>.
+                        Also copy and send image shown below. for it will make it easy to process.
+                        <br />
+                        "Right click/Press and hold" > "Copy Image" on below image to copy.
+                        <br />
+                        <br />
+                        <br />
+                        Once submitted if you want to create another skin for same spaceship please open this webapp
+                        again from the game to be able to generate a new skin.
+                        <br />
+                        Note: Submitting a skin will put it in review queue. Once approved it will be made available in
+                        game.
+                        *You need to provide a good reason for why you want the skin to be exclusive.
+                    <blockquote>
+                        By submitting the skin to us, you grant us a non-exclusive, permanent, sub-licensable,
+                        royalty-free, irrevocable, and worldwide licence to use,
+                        modify, reproduce, create derivative works from, distribute, transmit, perform communicate and
+                        exploit your skins (or any
+                        part of them)
+                    </blockquote>
+                    </p>
                     <ul id="ExportArea"
                         class="alt">
                     </ul>
+                    <p>
+                        Ensure you read the instructions above!
+                    </p>
                 </section>
             </section>
         </div>
     </div>
     <!-- Footer -->
     <footer id="footer">
-        <!-- <section>
-            <h2>Aliquam sed mauris</h2>
-            <p>Sed lorem ipsum dolor sit amet et nullam consequat feugiat consequat magna adipiscing tempus etiam dolore
-                veroeros. eget dapibus mauris. Cras aliquet, nisl ut viverra sollicitudin, ligula erat egestas velit,
-                vitae
-                tincidunt odio.</p>
-            <ul class="actions">
-                <li><a href="#"
-                       class="button">Learn More</a></li>
-            </ul>
-        </section> -->
+
         <section></section>
         <section>
-            <!-- <h2>Etiam feugiat</h2>
-            <dl class="alt">
-                <dt>Address</dt>
-                <dd>1234 Somewhere Road &bull; Nashville, TN 00000 &bull; USA</dd>
-                <dt>Phone</dt>
-                <dd>(000) 000-0000 x 0000</dd>
-                <dt>Email</dt>
-                <dd><a href="#">information@untitled.tld</a></dd>
-            </dl> -->
+
             <p>
                 To be used for spaceship skinning for ANXRacers game.<br />
                 Get it below:
@@ -130,6 +142,10 @@
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"
             integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA="
             crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
+            integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
     <script src="../assets/js/jquery.scrollex.min.js"></script>
     <script src="../assets/js/jquery.scrolly.min.js"></script>
     <script src="../assets/js/browser.min.js"></script>
@@ -139,16 +155,80 @@
     <script src="./pablo.min.js"></script>
     <script src="./jscolor.min.js"></script>
     <script>
+        var skinnerInput = {
+            UserDisplayName: "Voidapilota",
+            UserId: "00000000-0000-0000-0000-000000000000",
+            ShipId: "00000000-0000-0000-0000-000000000000",
+            SkinId: "00000000-0000-0000-0000-000000000000"
+        };
+        var Ship = undefined;
+        var Skin = undefined;
+        skinnerInput = undefined;
+        try {
+            skinnerInput = JSON.parse(atob(location.hash.substr(1)))
+
+            $("#h2UserDisplayName").text(`Welcome ${skinnerInput.UserDisplayName}!`);
+            // location.hash = "";
+        } catch (error) {
+            console.error(error);
+            $("#h2UserDisplayName").text("Please open this webapp from Skin Selector in-game!");
+        }
+
+        $("#txtSkinName").attr('placeholder', `${skinnerInput.UserDisplayName}'s Skin`);
+
         var svg = Pablo(document.getElementById("rightSide")).svg({
             width: "100%",
             height: "100%"
         });
-        var spaceships = document.getElementById("spaceships");
-        spaceships.addEventListener("change", function (evt) {
-            document.getElementById("leftSide").replaceChildren();
-            var Spaceship = evt.target.value;
-            if (Spaceship == "---") return;
-            svg.load('./' + Spaceship + '.svg', function onload(a, b, c) {
+
+        function LoadShip() {
+            fetch(`./ships/${skinnerInput.ShipId}.json`)
+
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Ship not available for Skinner');
+                    }
+                    return response.json()
+                })
+                .then((ship) => {
+                    console.log(ship);
+                    Ship = ship;
+                    $("#h3ShipName").text(`You are painting ${ship.ShipName}.  Loading default skin...`);
+                    $("#txtSkinName").attr('placeholder', `${skinnerInput.UserDisplayName}'s ${ship.ShipName} Skin`);
+                    LoadShipsDefaultSkinData();
+                })
+                .catch((error) => {
+                    $("#h3ShipName").text(error);
+                });
+        }
+        LoadShip();
+
+        function LoadShipsDefaultSkinData() {
+            fetch(`./skins/${skinnerInput.ShipId}.json`)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`Default Skin for ${Ship.ShipName} not available for Skinner`);
+                    }
+                    return response.json()
+                })
+                .then((skin) => {
+                    console.log(skin);
+                    Skin = skin;
+                    $("#h3ShipName").text(`You are painting ${Ship.ShipName}.  Default skin has been loaded below.`);
+                    $("#content").show();
+                    LoadShipsDefaultSkinVector();
+                })
+                .catch((error) => {
+                    $("#h3ShipName").text(error);
+                });
+
+        }
+        function isEmpty(value) {
+            return typeof value == 'string' && !value.trim() || typeof value == 'undefined' || value === null;
+        }
+
+        function LoadShipsDefaultSkinVector() {
+            svg.load('./skins/' + skinnerInput.ShipId + '.svg', function onload(a, b, c) {
                 svg.find("path, rect").forEach(path => {
                     var pPath = Pablo(path);
                     ["fill", "stroke"].forEach(attr => {
@@ -171,6 +251,10 @@
                             })
                             document.getElementById("leftSide").append(div);
                             pPath.on('touchstart click', function () {
+                                inp.scrollIntoView({
+                                    behavior: "smooth", // or "auto" or "instant"
+                                    block: "start" // or "end"
+                                });
                                 myPicker.show();
                             })
                         }
@@ -179,7 +263,114 @@
 
                 });
 
-                document.getElementById("Export").onclick = function () {
+                var ReverseThrustersTrailColor = undefined;
+                var div = document.createElement("li");
+                var lbl = document.createElement("label");
+                lbl.innerText = "Reverse Thrusters Trail Color";
+                div.append(lbl);
+                var inp = document.createElement("input");
+                inp.type = "text"
+                div.append(inp);
+                var myPicker = new JSColor(inp, {
+                    alphaChannel: true,
+                    value: "#FFFFFFFF",
+                    previewSize: 45,
+                    onChange: function (value) {
+                        debugger;
+                        ReverseThrustersTrailColor = this.channels;
+                    }
+                })
+                ReverseThrustersTrailColor = myPicker.channels;
+                document.getElementById("leftSide").append(div);
+
+                var MainThrustersTrailColor = undefined;
+                var div = document.createElement("li");
+                var lbl = document.createElement("label");
+                lbl.innerText = "Main Thruster Trail Color";
+                div.append(lbl);
+                var inp = document.createElement("input");
+                inp.type = "text"
+                div.append(inp);
+                var myPicker = new JSColor(inp, {
+                    alphaChannel: true,
+                    value: "#FFFFFFFF",
+                    previewSize: 45,
+                    onChange: function (value) {
+                        debugger;
+                        MainThrustersTrailColor = this.channels;
+                    }
+                })
+                MainThrustersTrailColor = myPicker.channels;
+                document.getElementById("leftSide").append(div);
+
+                div = document.createElement("li");
+                lbl = document.createElement("label");
+                lbl.innerText = "Exclusivity";
+                div.append(lbl);
+                var inp = document.createElement("input");
+                inp.type = "checkbox"
+                inp.id = "cbExclusive"
+                var Exclusive = false;
+                inp.addEventListener("change", function (e) {
+                    Exclusive = e.target.checked;
+                })
+                div.append(inp);
+                lbl = document.createElement("label");
+                lbl.innerText = "Is the Skin Exclusive to me*";
+                lbl.htmlFor = "cbExclusive"
+
+                div.append(lbl);
+                document.getElementById("leftSide").append(div);
+
+
+
+
+                document.getElementById("btnBuildSkin").onclick = function () {
+                    if (isEmpty($("#txtSkinName").val())) {
+                        $("#txtSkinName").select()[0].scrollIntoView({
+                            behavior: "smooth", // or "auto" or "instant"
+                            block: "center" // or "end"
+                        });
+
+                        $("#txtSkinName").attr('placeholder', `${skinnerInput.UserDisplayName}'s ${Ship.ShipName} Skin - Give a skin name plox!`);
+                        return;
+                    }
+                    var NewSkin = JSON.parse(JSON.stringify(Skin));
+                    NewSkin.UserId = skinnerInput.UserId;
+
+                    NewSkin.SkinName = $("#txtSkinName").val().trim();
+                    NewSkin.FromShipSkinId = Skin.SkinId;
+                    NewSkin.ShipSkinId = skinnerInput.SkinId;
+                    NewSkin.UserDisplayName = skinnerInput.UserDisplayName;
+                    NewSkin.UserId = skinnerInput.UserId;
+                    NewSkin.State = "Edit";
+                    NewSkin.LeftReverseThruster.Color = {
+                        r: ReverseThrustersTrailColor.r / 255.0,
+                        g: ReverseThrustersTrailColor.g / 255.0,
+                        b: ReverseThrustersTrailColor.b / 255.0,
+                        a: ReverseThrustersTrailColor.a,
+                    };
+                    NewSkin.RightReverseThruster.Color = {
+                        r: ReverseThrustersTrailColor.r / 255.0,
+                        g: ReverseThrustersTrailColor.g / 255.0,
+                        b: ReverseThrustersTrailColor.b / 255.0,
+                        a: ReverseThrustersTrailColor.a,
+                    };
+
+                    NewSkin.MainThrusters.forEach((thruster) => {
+                        thruster.Color = {
+                            r: MainThrustersTrailColor.r / 255.0,
+                            g: MainThrustersTrailColor.g / 255.0,
+                            b: MainThrustersTrailColor.b / 255.0,
+                            a: MainThrustersTrailColor.a,
+                        }
+                    })
+
+                    NewSkin.Exclusive = Exclusive;
+
+                    var zip = new JSZip();
+                    zip.file(skinnerInput.SkinId + '.json', JSON.stringify(NewSkin, null, 2))
+                    debugger;
                     document.getElementById("ExportArea").replaceChildren();
                     var progress = document.getElementById("exportProgress");
                     progress.value = 10;
@@ -187,206 +378,67 @@
                     svg.attr("width", 512);
                     svg.attr("height", 512);
                     var img512 = svg.toImage("png")[0];
+                    var pngBlob512 = svg.toCanvas((canvas) => {
+                        canvas[0].toBlob((blob) => {
+                            debugger;
+                            zip.file(skinnerInput.SkinId + '.512.png', blob)
+                        })
+                    });
+                    img512.style.display = "block";
                     var exportarea = document.getElementById("ExportArea")
                     var div = document.createElement("li");
-                    //div.append(img512)
+                    var download = document.createElement('a');
+                    div.append(img512)
 
                     setTimeout(() => {
                         progress.value = 25;
-                        var download = document.createElement('a');
-                        download.className = "button primary"
-                        download.href = img512.src;
-                        download.download = Spaceship + '.512.png';
-                        download.text = Spaceship + '.512.png';
-                        // download.click();
-                        div.append(download)
-
-                        exportarea.append(div)
                         svg.attr("width", 100);
                         svg.attr("height", 100);
                         setTimeout(() => {
 
                             progress.value = 50;
-                            var img100 = svg.toImage("png")[0];
+                            // var img100 = svg.toImage("png")[0];
+                            var pngBlob100 = svg.toCanvas((canvas) => {
+                                canvas[0].toBlob((blob) => {
+                                    debugger;
+                                    zip.file(skinnerInput.SkinId + '.100.png', blob)
+                                })
+                            });
 
                             setTimeout(() => {
 
                                 progress.value = 75;
-                                download = document.createElement('a');
-                                download.className = "button primary"
-                                download.href = img100.src;
-                                download.download = Spaceship + '.100.png';
-                                download.text = Spaceship + '.100.png';
-                                // download.click();
-                                div.append(download)
 
-                                exportarea.append(div)
 
                                 svg.attr("width", "100%");
                                 svg.attr("height", "100%");
-
+                                zip.file(skinnerInput.SkinId + '.svg', svg.markup(true))
                                 setTimeout(() => {
 
                                     progress.value = 100;
+
                                     download = document.createElement('a');
                                     download.className = "button primary"
-                                    download.onclick = function () {
-                                        svg.attr("width", 100);
-                                        svg.attr("height", 100);
-                                        Pablo(svg[0]).download("svg", Spaceship + '.svg')
-                                        svg.attr("width", "100%");
-                                        svg.attr("height", "100%");
-                                    };
-
-                                    download.text = Spaceship + '.svg';
-                                    // download.click();
-                                    div.append(download)
-
-                                    exportarea.append(div)
-
-
+                                    zip.generateAsync({ type: "base64" })
+                                        .then(function (content) {
+                                            download.href = "data:application/zip;base64," + content;
+                                            download.download = skinnerInput.SkinId + "." + Ship.ShipName + "." + skinnerInput.UserDisplayName + "." + NewSkin.SkinName + '.skin';
+                                            download.text = download.download;
+                                            div.append(download)
+                                            exportarea.append(div)
+                                            download.scrollIntoView({
+                                                behavior: "smooth", // or "auto" or "instant"
+                                                block: "end" // or "end"
+                                            });
+                                        });
                                 }, 250);
                             }, 250);
                         }, 100);
                     }, 250);
-
-
-
-
-
-                    // .forEach(img => {
-                    //     document.getElementById("ExportArea").append(img);
-                    //     var download = document.createElement('a');
-                    //     download.className = "button primary"
-                    //     download.href = img.src;
-                    //     download.download = Spaceship + '.512.png';
-                    //     download.text = Spaceship + '.512.png';
-                    //     // download.click();
-                    //     document.getElementById("ExportArea").append(download)
-
-                    //     svg.attr("width", 100);
-                    //     svg.attr("heigth", 100);
-                    //     svg.toImage("png").forEach(img => {
-                    //         document.getElementById("ExportArea").append(img);
-                    //         var download = document.createElement('a');
-                    //         download.className = "button primary"
-                    //         download.href = img.src;
-                    //         download.download = Spaceship + '.png';
-                    //         download.text = Spaceship + '.png';
-                    //         // download.click();
-                    //         document.getElementById("ExportArea").append(download)
-                    //         svg.attr("width", 512);
-                    //         svg.attr("heigth", 512);
-
-                    //     })
-                    // })
-
                 };
             }, true);
-        });
-        // var Spaceship = "Squid"
-        spaceships.value = "---"
+        }
     </script>
 </body>
 
 </html>
-
-
-
-
-
-
-<!-- 
-
-
-
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>ANXRacers Spaceship Skinner</title>
-    <meta charset="utf-8" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, user-scalable=no" />
-    <style>
-        html {
-            background-color: black;
-        }
-    </style>
-</head>
-
-<body>
-    <div id="Container">
-
-    </div>
-    <div id="Controls">
-
-    </div>
-    <button id="Export">Export</button>
-    <script src="./pablo.min.js"></script>
-    <script src="./jscolor.min.js"></script>
-    <script>
-        var svg = Pablo(document.getElementById("Container")).svg({
-            width: 512,
-            height: 512
-        });
-        var Spaceship = "Squid"
-        svg.load('./' + Spaceship + '.svg', function onload(a, b, c) {
-            svg.find("path, rect").forEach(path => {
-                var pPath = Pablo(path);
-                ["fill", "stroke"].forEach(attr => {
-                    var attrValue = pPath.css(attr);
-                    if (attrValue != undefined && attrValue != "" && attrValue != "none") {
-                        var div = document.createElement("div");
-                        var inp = document.createElement("input");
-                        div.append(inp);
-                        var myPicker = new JSColor(inp, {
-                            alphaChannel: true,
-                            value: pPath.css(attr),
-                            onChange: function (value) {
-                                pPath.css(attr, this.toRGBAString());
-                            }
-                        })
-                        document.getElementById("Controls").append(div);
-                        pPath.on('touchstart click', function(){
-                            myPicker.show();
-                        })
-                    }
-                })
-
-
-            });
-
-            document.getElementById("Export").onclick = function () {
-                svg.toImage("png").forEach(img => {
-                    document.body.append(img);
-                    var download = document.createElement('a');
-                    download.href = img.src;
-                    download.download = Spaceship + '.512.png';
-                    download.text = Spaceship + '.512.png';
-                    // download.click();
-                    document.body.append(download)
-                    
-                    svg.attr("width", 100);
-                    svg.attr("heigth", 100);
-                    svg.toImage("png").forEach(img => {
-                        document.body.append(img);
-                        var download = document.createElement('a');
-                        download.href = img.src;
-                        download.download = Spaceship + '.png';
-                        download.text = Spaceship + '.png';
-                        // download.click();
-                        document.body.append(download)
-                        svg.attr("width", 512);
-                        svg.attr("heigth", 512);
-
-                    })
-                })
-
-            };
-        }, true);
-    </script>
-</body>
-
-</html> -->
