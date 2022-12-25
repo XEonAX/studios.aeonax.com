@@ -98,6 +98,140 @@
           content="summary_large_image" />
     <script id="_schemaOrgMarkup-Product"
             type="application/ld+json">{"@type":"Product","@context":"https://schema.org","@id":"https://studios.aeonax.com/racers/index.html","brand":{"@type":"Brand","name":"AEonAX Studios"},"description":"Download and play ANXRacers for FREE at the Itch.io game store. Check for platform availability and play today!","gamePlatform":["windows","android"],"image":"https://studios.aeonax.com/racers/images/ANXRacersIGDB.png","mainEntityOfPage":true,"name":"ANXRacers","operatingSystem":["windows","android"],"producer":"AEonAX Studios","publisher":"AEonAX Studios","url":"https://studios.aeonax.com/racers/index.html","aggregateRating":{"@type":"AggregateRating","ratingValue":"4","reviewCount":"100"},"review":[{"@type":"Review","author":{"@type":"Person","name":"AEonAX"},"datePublished":"2022-11-13","reviewBody":"The game is awesome","name":"Its awesome. Spent so many hours","reviewRating":{"@type":"Rating","bestRating":"5","ratingValue":"5","worstRating":"1"}}],"offers":[{"price":0,"@type":"Offer","@context":"https://schema.org","acceptedPaymentMethod":["http://purl.org/goodrelations/v1#PayPal","http://purl.org/goodrelations/v1#VISA","http://purl.org/goodrelations/v1#MasterCard","http://purl.org/goodrelations/v1#AmericanExpress","http://purl.org/goodrelations/v1#Discover","http://purl.org/goodrelations/v1#JCB","http://purl.org/goodrelations/v1#DinersClub"],"availability":"http://schema.org/InStock","availableDeliveryMethod":"http://purl.org/goodrelations/v1#DeliveryModeDirectDownload","category":"VideoGame","mainEntityOfPage":false,"name":"ANXRacers","description":"ANXRacers offers you the ultimate arcade spaceship racing experience where everything is about reaching the perfect racing time. Optimize your turns, don't loose your speed, make epic space drifts and set World Records!","priceSpecification":{"price":0,"priceCurrency":"USD"},"priceValidUntil":"2023-11-14T00:00:00.000Z","url":"/racers/index.html","priceCurrency":"USD"}]}</script>
+    <style>
+        .theme_turquoise {
+            --cc-bg: #161a1c;
+            --cc-text: #d8e5ea;
+            --cc-btn-primary-bg: #60fed2;
+            --cc-btn-primary-text: #000;
+            --cc-btn-primary-hover-bg: #4dd4ae;
+            --cc-btn-secondary-bg: #242c31;
+            --cc-btn-secondary-text: var(--cc-text);
+            --cc-btn-secondary-hover-bg: #2b353c;
+            --cc-toggle-bg-off: #667481;
+            --cc-toggle-bg-on: var(--cc-btn-primary-bg);
+            --cc-toggle-bg-readonly: #343e45;
+            --cc-toggle-knob-bg: var(--cc-cookie-category-block-bg);
+            --cc-toggle-knob-icon-color: var(--cc-bg);
+            --cc-cookie-category-block-bg: #1e2428;
+            --cc-cookie-category-block-bg-hover: #242c31;
+            --cc-section-border: #222a30;
+            --cc-block-text: #bac9cf;
+            --cc-cookie-table-border: #2b3035;
+            --cc-overlay-bg: rgba(4, 6, 8, .85);
+            --cc-webkit-scrollbar-bg: #2c343a;
+            --cc-webkit-scrollbar-bg-hover: #384148;
+        }
+
+        .theme_turquoise .cc_div a {
+            color: var(--cc-btn-primary-bg);
+        }
+
+        .theme_turquoise #cc_div #s-hdr {
+            border-bottom: none;
+        }
+
+        .theme_turquoise .cc_div #c-txt {
+            color: #b0b8c6 !important;
+        }
+    </style>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@2.8.9/dist/cookieconsent.css"
+          integrity="sha256-PPTG3VhEwHh8jgoiOgifordwvLTG5M7hEhrueOUy4Kc="
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@2.8.9/dist/cookieconsent.js"
+            integrity="sha256-r372zsTupu5VyD3zkc+VWL5tGUNhz5FNcPK9WkP9Mz0="
+            crossorigin="anonymous"></script>
+    <script>
+        window.addEventListener('load', function () {
+            // obtain cookieconsent plugin
+            var cookieconsent = initCookieConsent();
+
+            // run plugin with config object
+            cookieconsent.run({
+                autorun: true,
+                current_lang: 'en',
+                autoclear_cookies: true,
+                page_scripts: true,
+                gui_options: {
+                    consent_modal: {
+                        layout: 'cloud',               // box/cloud/bar
+                        position: 'bottom center',     // bottom/middle/top + left/right/center
+                        transition: 'slide',           // zoom/slide
+                    },
+                    settings_modal: {
+                        layout: 'box',                 // box/bar
+                        transition: 'slide'            // zoom/slide
+                    }
+                },
+                onFirstAction: function (user_preferences, cookie) {
+                    debugger;
+                    if (cookieconsent.allowedCategory('analytics'))
+                        gtag('consent', 'update', { 'analytics_storage': 'granted' });
+                    else
+                        gtag('consent', 'update', { 'analytics_storage': 'denied' });
+                    // callback triggered only once
+                },
+
+                onAccept: function (cookie) {
+                    // ... cookieconsent accepted
+                    debugger;
+                    if (cookieconsent.allowedCategory('analytics'))
+                        gtag('consent', 'update', { 'analytics_storage': 'granted' });
+                },
+
+                onChange: function (cookie, changed_preferences) {
+                    debugger;
+
+                    // ... cookieconsent preferences were changed
+                },
+
+                languages: {
+                    en: {
+                        consent_modal: {
+                            title: 'Have a cookie. Click Accept. Ha!',
+                            description: 'We use google analytics to understand how we lured you here. Or where you will go. Since this site has no ads. We don\`t use cookies for ads. ',
+                            primary_btn: {
+                                text: 'Accept',
+                                role: 'accept_all'              // 'accept_selected' or 'accept_all'
+                            },
+                            secondary_btn: {
+                                text: 'Settings',
+                                role: 'settings'                // 'settings' or 'accept_necessary'
+                            }
+                        },
+                        settings_modal: {
+                            title: 'Cookie preferences',
+                            save_settings_btn: 'Save settings',
+                            accept_all_btn: 'Accept all',
+                            reject_all_btn: 'Reject all',       // optional, [v.2.5.0 +]
+                            cookie_table_headers: [
+                                { col1: 'Name' },
+                                { col2: 'Domain' },
+                                { col3: 'Expiration' },
+                                { col4: 'Description' },
+                                { col5: 'Type' }
+                            ],
+                            blocks: [
+                                {
+                                    title: 'Cookie usage',
+                                    description: 'I use cookies to ensure the basic functionalities of the website and to enhance your online experience. You can choose for each category to opt-in/out whenever you want.'
+                                }, {
+                                    title: 'Analytics cookies',
+                                    description: 'These cookies collect information about how you use the website, which pages you visited and which links you clicked on. All of the data is anonymized and cannot be used to identify you.',
+                                    toggle: {
+                                        value: 'analytics',
+                                        enabled: true,
+                                        readonly: false
+                                    },
+                                }
+                            ]
+                        }
+                    }
+                }
+            });
+        });
+    </script>
     <!-- Google tag (gtag.js) -->
     <script async
             src="https://www.googletagmanager.com/gtag/js?id=G-KVX7XGMT9T"></script>
@@ -106,11 +240,18 @@
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
-        gtag('config', 'G-KVX7XGMT9T');
+        gtag('config', 'G-KVX7XGMT9T');//, { 'debug_mode': true }
+        gtag('consent', 'default', {
+            'functionality_storage': 'denied',
+            'security_storage': 'denied',
+            'ad_storage': 'denied',
+            'analytics_storage': 'denied',
+            'personalization_storage': 'denied'
+        });
     </script>
 </head>
 
-<body class="is-preload">
+<body class="is-preload theme_turquoise ">
 
     <!-- Wrapper -->
     <div id="wrapper">
