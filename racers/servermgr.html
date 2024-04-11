@@ -1,0 +1,280 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>ANX Server Manager</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="../assets/css/noscript.css" />
+    </noscript>
+</head>
+
+<body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Header -->
+        <header id="header">
+            <h1>ANXRacers Multiplayer Server Manager</h1>
+        </header>
+
+        <!-- Main -->
+        <div id="main">
+            <section id="content" class="main">
+                <section>
+                    <h2>Connection Details</h2>
+                    <div>
+                        <div class="row gtr-uniform">
+                            <div class="col-6 col-12-xsmall">
+                                <label for="server-url">Server Url</label>
+                                <input type="url" name="server-url" id="server-url" value="http://localhost:5678"
+                                    placeholder="http://localhost:5678" />
+                            </div>
+                            <div class="col-12">
+                                <ul class="actions fixed">
+                                    <li><input type="button" id="btnConnect" value="Connect" class="primary" />
+                                    </li>
+                                    <li><i id="ConnectIndicator" class=""></i>
+                                    </li>
+                                </ul>
+                                <ul class="actions">
+                                    <li><input type="button" id="btnShare" value="Copy link to connect in-game" />
+                                    </li>
+                                    <li><i id="CopyIndicator" class=""></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <hr>
+                <section>
+                    <h2>Server Details</h2>
+                    <div>
+                        <div class="row gtr-uniform">
+                            <div class="col-6 col-12-xsmall">
+                                <label for="server-url">Server Url</label>
+                                <input readonly="readonly" type="text" name="server-name" id="server-name"
+                                    placeholder="Server Name" />
+                            </div>
+                            <div class="col-6 col-12-xsmall">
+                                <label for="server-key">Server Hostname</label>
+                                <input readonly="readonly" type="text" name="server-hostname" id="server-hostname"
+                                    placeholder="Server Hostname" />
+                            </div>
+                            <div class="col-6 col-12-xsmall">
+                                <label for="server-key">Server Port UDP</label>
+                                <input readonly="readonly" type="text" name="server-port-udp" id="server-port-udp"
+                                    placeholder="Port UDP" />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <hr>
+
+                <section>
+                    <h2>Level And Ship</h2>
+                    <div>
+                        <div class="row gtr-uniform">
+                            <div class="col-6 col-12-xsmall">
+                                <label for="server-level">Track Selection</label>
+                                <select name="server-level" id="server-level">
+                                </select>
+                            </div>
+                            <div class="col-6 col-12-xsmall">
+                                <label for="server-ship">Spaceship Selection</label>
+                                <select name="server-ship" id="server-ship">
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <ul class="actions fixed">
+                                    <li><input type="button" id="btnApplyLevelAndShip" value="Apply" class="primary" />
+                                    </li>
+                                    <li><i id="ApplyIndicator" class=""></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </div>
+    <footer id="footer">
+        <p class="copyright">©AEonAX. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+    </footer>
+    <script>
+        let connectIndicator = document.getElementById('ConnectIndicator');
+            let copyIndicator = document.getElementById('CopyIndicator');
+        let applyIndicator = document.getElementById('ApplyIndicator');
+        (async function LoadSingularityServerUrl() {
+            const url = "https://racers.status.aeonax.com/"
+            const response = await fetch(url, {
+                method: "GET", // *GET, POST, PUT, DELETE, etc.
+                // mode: "no-cors", // no-cors, *cors, same-origin
+                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: "same-origin", // include, *same-origin, omit
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                redirect: "error", // manual, *follow, error
+                //referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                //body: JSON.stringify(data), // body data type must match "Content-Type" header
+            })
+            const discovery = await response.json();
+            (async function LoadTracks(singularityUrl) {
+                const url = singularityUrl + "Levels/Published"
+                const response = await fetch(url, {
+                    method: "GET", // *GET, POST, PUT, DELETE, etc.
+                    // mode: "no-cors", // no-cors, *cors, same-origin
+                    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                    credentials: "same-origin", // include, *same-origin, omit
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    redirect: "error", // manual, *follow, error
+                    //referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                    //body: JSON.stringify(data), // body data type must match "Content-Type" header
+                })
+                const levels = await response.json(); // parses JSON response into native JavaScript objects
+                var selectElement = document.getElementById('server-level');
+                levels.sort((a, b) => new Date(a.ModifiedAt) - new Date(b.ModifiedAt))
+
+                levels.forEach(level => {
+                    selectElement.add(new Option(level.LevelName, level.LevelId));
+                });
+
+            })(discovery.SingularityService);
+            (async function LoadSpaceships(singularityUrl) {
+                const url = singularityUrl + "Ships/Published"
+                const response = await fetch(url, {
+                    method: "GET",
+                    cache: "no-cache",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    redirect: "error",
+                })
+                const shipIds = await response.json();
+                var selectElement = document.getElementById('server-ship');
+                let ships = [];
+                shipIds.forEach(async shipId => {
+                    const url = "https://srv3.aeonax.com/ANXRacers/V3/" + "Ship/" + shipId
+                    const response = await fetch(url, {
+                        method: "GET",
+                        cache: "no-cache",
+                        credentials: "same-origin",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        redirect: "error",
+                    })
+                    const ship = await response.json();
+                    ships.push(ship);
+                    if (ships.length == shipIds.length) {
+                        ships.sort((a, b) => new Date(a.ModifiedAt) - new Date(b.ModifiedAt))
+
+                        ships.forEach(ship => {
+                            selectElement.add(new Option(ship.ShipName, ship.ShipId));
+                        });
+                    }
+                });
+            })(discovery.SingularityService);
+        })();
+
+
+        function fallbackCopyTextToClipboard(text) {
+            var textArea = document.createElement("textarea");
+            textArea.value = text;
+
+            // Avoid scrolling to bottom
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                var successful = document.execCommand('copy');
+                var msg = successful ? 'successful' : 'unsuccessful';
+                console.log('Fallback: Copying text command was ' + msg);
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+        function copyTextToClipboard(text) {
+            if (!navigator.clipboard) {
+                fallbackCopyTextToClipboard(text);
+                return;
+            }
+            navigator.clipboard.writeText(text).then(function () {
+                console.log('Async: Copying to clipboard was successful!');
+            }, function (err) {
+                console.error('Async: Could not copy text: ', err);
+            });
+        }
+        document.querySelector('#btnConnect').addEventListener('click', async function (event) {
+            connectIndicator.classList.add("icon", "solid", "alt", "fa-spinner", "fa-pulse");
+            const url = document.getElementById('server-url').value + '/Api/Discovery/';
+
+            const response = await fetch(url, {
+                method: "GET",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                redirect: "error",
+            });
+            var discoveryInfo = await response.json();
+            document.getElementById('server-name').value = discoveryInfo.ServerDisplayName;
+            document.getElementById('server-hostname').value = discoveryInfo.HostName;
+            document.getElementById('server-port-udp').value = discoveryInfo.PortUDP;
+            connectIndicator.classList.remove("icon", "solid", "alt", "fa-spinner", "fa-pulse");
+            connectIndicator.classList.add("icon", "solid", "alt", "fa-check-circle");
+            return response;
+        });
+        document.querySelector('#btnApplyLevelAndShip').addEventListener('click', async function (event) {
+            applyIndicator.classList.add("icon", "solid", "alt", "fa-spinner", "fa-pulse");
+            const url = document.getElementById('server-url').value + '/Api/LevelAndShip/';//+ document.getElementById('server-key').value;
+            const response = await fetch(url, {
+                method: "POST",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                redirect: "error",
+                body: JSON.stringify({
+                    LevelId: document.getElementById('server-level').value,
+                    ShipId: document.getElementById('server-ship').value,
+                }),
+            });
+            var applyResult = await response.json();
+            applyIndicator.classList.remove("icon", "solid", "alt", "fa-spinner", "fa-pulse");
+            applyIndicator.classList.add("icon", "solid", "alt", "fa-check-circle");
+            console.log(applyResult);
+        });
+        document.querySelector('#btnShare').addEventListener('click', async function (event) {
+            copyIndicator.classList.add("icon", "solid", "alt", "fa-spinner", "fa-pulse");
+            copyTextToClipboard("https://studios.aeonax.com/racers/challenge.html?a=&galaxyUrl=" + document.getElementById('server-url').value);
+            copyIndicator.classList.remove("icon", "solid", "alt", "fa-spinner", "fa-pulse");
+            copyIndicator.classList.add("icon", "solid", "alt", "fa-check-circle");
+        });
+    </script><!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.scrollex/0.2.1/jquery.scrollex.min.js"
+        integrity="sha256-/CW3X7P8i0J1ZBO+OH4NemAoExJSg9I4RVGWHXPqeE4=" crossorigin="anonymous"></script>
+    <script src="/assets/js/ajlkn.min.js"></script>
+    <script src="/assets/js/util.js"></script>
+    <script src="/assets/js/main.js"></script>
+</body>
+
+</html>
