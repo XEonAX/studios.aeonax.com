@@ -267,6 +267,11 @@
             copyIndicator.classList.remove("icon", "solid", "alt", "fa-spinner", "fa-pulse");
             copyIndicator.classList.add("icon", "solid", "alt", "fa-check-circle");
         });
+        var defaultServer = new URL(location.href).searchParams.get("server");
+        if(defaultServer){
+            document.getElementById('server-url').value = defaultServer;
+            document.getElementById('btnConnect').click();
+        }
     </script><!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
